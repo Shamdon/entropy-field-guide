@@ -39,6 +39,12 @@ Commit both the source changes and the regenerated `docs/` directory.
 
 See [UNPUBLISHING.md](UNPUBLISHING.md) for the reversible steps that remove the live site without deleting the repository or its source.
 
+## Project documents
+
+- [Editorial and technical audit](CONTENT_AUDIT.md)
+- [Improvement plan and work breakdown structure](ROADMAP.md)
+- [Claude Design input brief](CLAUDE_DESIGN_BRIEF.md)
+
 ## Structure
 
 - `src/App.tsx` — guide content, equations, interactions, and research links

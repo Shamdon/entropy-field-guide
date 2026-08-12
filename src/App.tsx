@@ -48,14 +48,14 @@ function CrossEntropyLab() {
     <div className="model-lab">
       <div className="model-lab-copy">
         <span className="eyebrow">Interactive experiment 02</span><h3>The source stays fixed. Only the model moves.</h3>
-        <p>The real source produces heads 80% of the time. Adjust what the model believes. A mismatched belief spends extra bits.</p>
+        <p>The underlying source produces heads 80% of the time. Adjust what the model believes. A mismatched model costs extra bits.</p>
         <label htmlFor="model-probability">Model probability for heads <output>{guess}%</output></label>
         <input id="model-probability" type="range" min="1" max="99" value={guess} onChange={(e)=>setGuess(Number(e.target.value))} />
       </div>
       <div className="decomposition" aria-live="polite">
         <div><span>Irreducible entropy</span><strong>{source.toFixed(3)}</strong><small>H(P)</small></div><b>+</b>
         <div className={penalty < .001 ? "matched" : ""}><span>Model penalty</span><strong>{penalty.toFixed(3)}</strong><small>D<sub>KL</sub>(P‖Q)</small></div><b>=</b>
-        <div><span>Actual average cost</span><strong>{cross.toFixed(3)}</strong><small>H(P,Q)</small></div>
+        <div><span>Expected average cost</span><strong>{cross.toFixed(3)}</strong><small>H(P,Q)</small></div>
       </div>
     </div>
   );
@@ -91,18 +91,18 @@ export default function Home() {
       <section className="hero" id="top">
         <div className="hero-kicker"><span>From intuition to formalism</span><span>Reading time · 24 minutes</span></div>
         <h1>How much<br/>surprise<br/>is inside?</h1>
-        <div className="hero-aside"><p className="lead">Entropy measures uncertainty before an event—and the information revealed when uncertainty is resolved.</p><p>Begin with a coin. End with the mathematics connecting prediction, compression, and large language models.</p><button className="text-link" onClick={()=>goTo("intuition")}>Begin at zero <span>↓</span></button></div>
+        <div className="hero-aside"><p className="lead">Entropy measures expected uncertainty before an outcome; surprisal measures the information conveyed by the outcome that occurs.</p><p>Begin with a coin. End with the mathematics connecting prediction, compression, and large language models.</p><button className="text-link" onClick={()=>goTo("intuition")}>Begin at zero <span>↓</span></button></div>
         <div className="hero-graphic" aria-label="A probability field moving from order to uncertainty">{Array.from({length:64}).map((_,i)=><span key={i} style={{opacity:.08+((i*17)%91)/100}}/>)}</div>
       </section>
 
       <section className="chapter" id="intuition"><div className="chapter-index">01</div><div className="chapter-content">
         <span className="eyebrow">The intuition</span><h2>Entropy is the average amount of surprise.</h2>
-        <p className="intro">Imagine opening two boxes. The first always contains a white ball. The second contains a randomly chosen white or black ball. Opening the first tells you nothing new. Opening the second resolves real uncertainty. The second box has more entropy.</p>
+        <p className="intro">Imagine opening two boxes. The first always contains a white ball. The second contains a white or black ball, chosen with equal probability. Opening the first tells you nothing new. Opening the second resolves real uncertainty. The second box has more entropy.</p>
         <div className="box-example">
           <article><div className="ball-row certain" aria-hidden="true"><i/><i/><i/><i/><i/><i/></div><span>Box A · predictable</span><strong>0 bits</strong><p>The outcome was already known.</p></article>
           <article><div className="ball-row uncertain" aria-hidden="true"><i/><i/><i/><i/><i/><i/></div><span>Box B · uncertain</span><strong>1 bit</strong><p>One fair binary choice must be resolved.</p></article>
         </div>
-        <div className="callout"><span className="callout-mark">i</span><p><strong>Entropy is measured before you look.</strong> Once the ball is revealed, uncertainty is gone. Information is what the observation supplied by removing that uncertainty.</p></div>
+        <div className="callout"><span className="callout-mark">i</span><p><strong>Entropy is measured before you look.</strong> Once the ball is revealed, uncertainty is gone. Information is what the observation supplies by removing that uncertainty.</p></div>
       </div></section>
 
       <section className="chapter" id="surprise"><div className="chapter-index">02</div><div className="chapter-content">
@@ -112,9 +112,9 @@ export default function Home() {
         <div className="surprise-scale">
           <article><span className="fraction">1 / 2</span><div className="bit-cells"><i/></div><strong>1 bit</strong><p>A fair coin result.</p></article>
           <article><span className="fraction">1 / 4</span><div className="bit-cells"><i/><i/></div><strong>2 bits</strong><p>One of four equal options.</p></article>
-          <article><span className="fraction">1 / 1,024</span><div className="bit-cells ten">{Array.from({length:10}).map((_,i)=><i key={i}/>)}</div><strong>10 bits</strong><p>A one-in-a-thousand event.</p></article>
+          <article><span className="fraction">1 / 1,024</span><div className="bit-cells ten">{Array.from({length:10}).map((_,i)=><i key={i}/>)}</div><strong>10 bits</strong><p>A one-in-1,024 event.</p></article>
         </div>
-        <div className="prose-grid"><h3>Why a logarithm?</h3><div><p>Independent surprises should add. Two fair coin tosses have four equally likely outcomes: each complete outcome costs 2 bits. The logarithm converts multiplied probabilities into added information.</p><p className="mini-equation">−log₂(p₁ × p₂) = −log₂p₁ − log₂p₂</p></div></div>
+        <div className="prose-grid"><h3>Why a logarithm?</h3><div><p>Independent surprises should add. Two fair coin tosses have four equally likely outcomes: each complete outcome costs 2 bits. The logarithm converts multiplied probabilities into added information.</p><p className="mini-equation">−log₂(p₁ × p₂) = −log₂ p₁ − log₂ p₂</p></div></div>
       </div></section>
 
       <section className="chapter dark-band" id="entropy"><div className="chapter-index">03</div><div className="chapter-content">
@@ -131,15 +131,15 @@ export default function Home() {
 
       <section className="chapter" id="context"><div className="chapter-index">04</div><div className="chapter-content">
         <span className="eyebrow">Conditional entropy</span><h2>What you already know changes what remains uncertain.</h2>
-        <p className="intro">Entropy is never detached from its conditions. The next letter in an unknown sentence is uncertain. After reading “information theor”, the next letter becomes much easier to predict.</p>
+        <p className="intro">The uncertainty relevant to prediction depends on what is already known. The next letter in an unknown sentence is uncertain. After reading “information theor”, it becomes much easier to predict.</p>
         <div className="context-demo"><div><span>Without context</span><p>_</p><small>Many plausible symbols</small></div><div className="context-arrow">→</div><div><span>With context</span><p>information theor<span>_</span></p><small>“y” receives most probability</small></div></div>
         <Equation label="The uncertainty in X that remains after Y is known">H(X | Y) = H(X,Y) − H(Y)</Equation>
         <div className="concept-split"><div><h3>Context can lower conditional entropy.</h3><p>It changes the prediction problem by adding side information. Syntax, earlier tokens, a dictionary, another sensor, or the previous video frame can all remove uncertainty about what comes next.</p></div><div className="formula-stack"><span>More context</span><b>↓</b><span>Less uncertainty</span><b>↓</b><span>Shorter ideal code</span></div></div>
       </div></section>
 
       <section className="chapter" id="compression"><div className="chapter-index">05</div><div className="chapter-content">
-        <span className="eyebrow">Prediction becomes code</span><h2>Compression is probability translated into bits.</h2>
-        <p className="intro">An entropy coder does not discover patterns. A predictor assigns probabilities; arithmetic coding, range coding, or ANS converts them into a near-minimal bitstream.</p>
+        <span className="eyebrow">Prediction becomes code</span><h2>Entropy coding translates probabilities into bits.</h2>
+        <p className="intro">In the model–coder decomposition used here, the entropy coder does not discover patterns. A predictor assigns probabilities; arithmetic coding, range coding, and ANS convert those probabilities into a near-minimal bitstream.</p>
         <div className="pipeline" aria-label="Compression pipeline">
           <article><span>01</span><strong>Context</strong><small>What has already been decoded</small></article><i/>
           <article><span>02</span><strong>Predictor</strong><small>Probability of every next symbol</small></article><i/>
@@ -147,7 +147,7 @@ export default function Home() {
           <article><span>04</span><strong>Exact data</strong><small>Recovered without alteration</small></article>
         </div>
         <Equation label="Ideal code length under an autoregressive model q">L<sub>q</sub>(x₁:ₙ) ≈ Σ<sub>t=1</sub><sup>n</sup> −log<sub>2</sub> q(x<sub>t</sub> | x&lt;t)</Equation>
-        <div className="definition-grid"><article><span>Known probabilities</span><h3>Coding is near-solved.</h3><p>Modern entropy coders approach the model-assigned ideal length with small overhead.</p></article><article><span>Unknown source</span><h3>Modeling remains open.</h3><p>The harder problem is estimating probabilities that match new data, including long-range structure.</p></article></div>
+        <div className="definition-grid"><article><span>Known probabilities</span><h3>Entropy coding is near-optimal.</h3><p>Modern entropy coders approach the model-assigned ideal codelength with only small finite-length and implementation overhead.</p></article><article><span>Unknown source</span><h3>Modeling remains open.</h3><p>The harder problem is estimating probabilities that match new data, including long-range structure.</p></article></div>
         <blockquote><p>Every prediction is a bet paid for in bits.</p><cite>An operational reading of log loss</cite></blockquote>
       </div></section>
 
@@ -166,15 +166,15 @@ export default function Home() {
 
       <section className="chapter" id="ai"><div className="chapter-index">07</div><div className="chapter-content">
         <span className="eyebrow">Language models</span><h2>An LLM is a probability model before it is a chatbot.</h2>
-        <p className="intro">During pretraining, an autoregressive language model repeatedly sees a context and assigns probabilities to the next token. Cross-entropy loss penalizes it according to the probability assigned to the token that actually appeared.</p>
+        <p className="intro">During pretraining, an autoregressive language model repeatedly sees a context and assigns probabilities to the next token. Empirical cross-entropy loss penalizes the model according to the probability it assigned to the token that actually appeared.</p>
         <div className="token-demo"><div className="token-context"><span>The laboratory measured the</span></div><div className="token-predictions">
           <div><span>temperature</span><i style={{width:"72%"}}/><b>0.72</b></div><div><span>signal</span><i style={{width:"15%"}}/><b>0.15</b></div><div><span>sample</span><i style={{width:"8%"}}/><b>0.08</b></div><div><span>other</span><i style={{width:"5%"}}/><b>0.05</b></div>
         </div></div>
         <div className="ai-grid">
           <article><span className="glyph">CE</span><h3>Training objective</h3><p>Minimize negative log-likelihood: the same quantity that determines ideal code length.</p></article>
-          <article><span className="glyph">PPL</span><h3>Perplexity</h3><p>If loss is measured in bits per token, perplexity is 2 raised to that loss. Lower means fewer effective choices.</p></article>
-          <article><span className="glyph">B/T</span><h3>Tokenization caveat</h3><p>Bits per token cannot fairly compare different tokenizers. Bits per byte is safer.</p></article>
-          <article><span className="glyph">≡</span><h3>Exact decoding</h3><p>Encoder and decoder must reproduce compatible probabilities. One discrepancy can corrupt the stream.</p></article>
+          <article><span className="glyph">PPL</span><h3>Perplexity</h3><p>If loss is measured in bits per token, perplexity is 2 raised to that loss. It can be read as an effective number of equally likely choices.</p></article>
+          <article><span className="glyph">B/T</span><h3>Tokenization caveat</h3><p>Bits per token cannot fairly compare different tokenizers. On the same byte-encoded dataset, bits per byte is typically more comparable.</p></article>
+          <article><span className="glyph">≡</span><h3>Exact decoding</h3><p>Encoder and decoder must reproduce the same quantized probability distribution at every step. One discrepancy can corrupt the stream.</p></article>
         </div>
         <div className="myth"><span>Important boundary</span><h3>Compression is evidence of captured regularity—not proof of understanding.</h3><p>Memorization, surface correlations, and causal structure can all improve prediction. Compression alone does not distinguish among them. Evaluation must use genuinely unseen data and account for contamination, model cost, and side information.</p></div>
       </div></section>
@@ -188,16 +188,16 @@ export default function Home() {
           <article><span>I(X;Y)</span><h3>Mutual information</h3><p>How many bits knowing Y saves when describing X.</p><code>I(X;Y)=H(X)−H(X|Y)</code></article>
           <article><span>D<sub>KL</sub></span><h3>KL divergence</h3><p>Expected excess log loss from using Q when P generates data.</p><code>D<sub>KL</sub>(P‖Q)≥0</code></article>
           <article><span>R(D)</span><h3>Rate–distortion</h3><p>Minimum rate when some controlled loss is permitted.</p><code>lossy, not lossless</code></article>
-          <article><span>MDL</span><h3>Minimum description length</h3><p>Balance model complexity against unexplained residual data.</p><code>L(model)+L(data|model)</code></article>
-          <article><span>K(x)</span><h3>Kolmogorov complexity</h3><p>Length of the shortest program outputting one exact object; uncomputable in general.</p><code>individual sequences</code></article>
-          <article><span>h(X)</span><h3>Differential entropy</h3><p>A continuous analogue that can be negative and depends on coordinates.</p><code>continuous variables</code></article>
+          <article><span>MDL</span><h3>Minimum description length</h3><p>Balances model complexity against unexplained residual data.</p><code>L(model)+L(data|model)</code></article>
+          <article><span>K(x)</span><h3>Kolmogorov complexity</h3><p>Length of the shortest program that outputs one exact object; uncomputable in general.</p><code>individual sequences</code></article>
+          <article><span>h(X)</span><h3>Differential entropy</h3><p>A continuous analogue that can be negative and depends on the chosen units and coordinates.</p><code>continuous variables</code></article>
         </div>
-        <div className="chain-rule"><span className="eyebrow inverse">The chain rule</span><p>H(X₁,…,Xₙ) = Σ H(X<sub>t</sub> | X&lt;t)</p><small>Information in a sequence is the sum of what each symbol contributes after everything before it is known. This is the bridge to autoregressive models.</small></div>
+        <div className="chain-rule"><span className="eyebrow inverse">The chain rule</span><p>H(X₁,…,Xₙ) = Σ H(X<sub>t</sub> | X&lt;t)</p><small>The joint entropy of a sequence is the sum of the uncertainty remaining in each symbol after everything before it is known. This is the bridge to autoregressive models.</small></div>
         <div className="caveats"><h3>Four boundaries worth keeping</h3><ol>
-          <li><span>01</span><p><strong>Representation matters.</strong> Entropy per token changes when tokenization changes.</p></li>
-          <li><span>02</span><p><strong>Conditions matter.</strong> Shared context, dictionaries, and pretrained weights are side information.</p></li>
+          <li><span>01</span><p><strong>Representation matters.</strong> The reported bits-per-token rate changes when tokenization changes.</p></li>
+          <li><span>02</span><p><strong>Conditions matter.</strong> Context, dictionaries, and pretrained weights are side information only when they are available to both encoder and decoder.</p></li>
           <li><span>03</span><p><strong>Average is not individual.</strong> Entropy describes a distribution; surprisal describes an outcome.</p></li>
-          <li><span>04</span><p><strong>Correlation is not cause.</strong> Mutual information is dependence, not causal direction.</p></li>
+          <li><span>04</span><p><strong>Dependence is not causation.</strong> Mutual information measures statistical dependence, not causal direction.</p></li>
         </ol></div>
       </div></section>
 
@@ -205,19 +205,18 @@ export default function Home() {
         <span className="eyebrow">Research frontier · August 2026</span><h2>The predictor is improving. The system cost remains.</h2>
         <p className="intro">Recent work supports the prediction–compression equivalence while exposing the engineering and scientific qualifications around it.</p>
         <div className="research-list">
-          <article><time>2024</time><div><h3>Foundation models cross modalities</h3><p><em>Language Modeling Is Compression</em> showed pretrained language models acting as lossless predictors for text, image patches, and audio samples. Model weights were treated as shared.</p></div><a href="https://deepmind.google/research/publications/39768/" target="_blank" rel="noreferrer">Primary paper ↗</a></article>
+          <article><time>2024</time><div><h3>Foundation models cross modalities</h3><p><em>Language Modeling Is Compression</em> paired pretrained language models with arithmetic coding to compress text, image patches, and audio samples losslessly. Its headline ratios treat model weights as shared side information.</p></div><a href="https://deepmind.google/research/publications/39768/" target="_blank" rel="noreferrer">Primary paper ↗</a></article>
           <article><time>2025</time><div><h3>Hybrid prediction handles domain shift</h3><p>A weighted product of experts combined a pretrained neural model with a universal compressor at test time, targeting performance no worse than the better component.</p></div><a href="https://aclanthology.org/2025.findings-emnlp.110/" target="_blank" rel="noreferrer">ACL paper ↗</a></article>
-          <article><time>MAR 2026</time><div><h3>Multilingual evidence adds a warning</h3><p>In one evaluation, Llama 3.2 1B lost substantially to classical baselines on tested non-English and unstructured text. A strong prior is not universal.</p></div><a href="https://aclanthology.org/2026.eacl-srw.16.pdf" target="_blank" rel="noreferrer">EACL workshop ↗</a></article>
-          <article className="latest"><time>JUL 2026</time><div><h3>Bounded ranking improves source-code compression</h3><p>A preprint evaluating 30 models found 95–98% of correct code tokens within the top 63 predictions. Thresholding improved the tested LLM pipeline, but neural inference remained dramatically slower than zstd.</p></div><a href="https://arxiv.org/html/2607.24192v2" target="_blank" rel="noreferrer">Latest preprint ↗</a></article>
+          <article><time>MAR 2026</time><div><h3>Multilingual evidence adds a warning</h3><p>In one evaluation, Llama 3.2 1B was substantially outperformed by classical baselines on the tested non-English and unstructured text. A strong prior is not universal.</p></div><a href="https://aclanthology.org/2026.eacl-srw.16.pdf" target="_blank" rel="noreferrer">EACL workshop ↗</a></article>
+          <article className="latest"><time>JUL 2026</time><div><h3>Bounded ranking improves source-code compression</h3><p>A preprint evaluating 30 models found that, for most models, 95–98% of correct code tokens appeared among the top 63 predictions. Thresholding improved both compression and throughput over unbounded ranking, but the LLM pipelines remained one to two orders of magnitude slower than general-purpose compressors.</p></div><a href="https://arxiv.org/html/2607.24192v2" target="_blank" rel="noreferrer">Latest preprint ↗</a></article>
         </div>
         <div className="open-problems"><span className="eyebrow">Open problems</span><ul>
           <li>Strong long-range predictions without full autoregressive inference cost.</li><li>Deterministic decoding across hardware and software stacks.</li><li>Total description length when model weights are not already shared.</li><li>Separating generalized structure from memorization and contamination.</li><li>Turning residual bit costs into detectors of novelty, shift, and hidden structure.</li>
         </ul></div>
       </div></section>
 
-      <section className="closing"><span className="eyebrow">The one-sentence model</span><p>Entropy is the irreducible average surprise left after all legitimate context is known; compression pays for that surprise in bits, and learning searches for predictions that stop us paying for patterns twice.</p><button className="text-link" onClick={()=>goTo("top")}>Return to the beginning <span>↑</span></button></section>
+      <section className="closing"><span className="eyebrow">The one-sentence model</span><p>Entropy is the irreducible average surprise left once specified side information is known; lossless compression pays for that surprise in bits, and learning searches for predictive structure so recurring regularities need not be encoded from scratch.</p><button className="text-link" onClick={()=>goTo("top")}>Return to the beginning <span>↑</span></button></section>
       <footer><div className="footer-brand"><span>H</span><strong>Entropy Field Guide</strong></div><div><span>Discipline</span><p>Information theory<br/>Statistical learning<br/>Lossless compression</p></div><div><span>Method</span><p>Intuition → formalism<br/>Prediction → code<br/>Claims → evidence</p></div><div><span>Edition</span><p>Field note 001<br/>12 August 2026<br/>Primary sources linked above</p></div></footer>
     </div>
   </main>;
 }
-
