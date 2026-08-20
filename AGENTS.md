@@ -2,8 +2,10 @@
 
 ## Lessons learned
 
-Before unfamiliar, risky, or previously troublesome work, review [`lessons-learned/README.md`](lessons-learned/README.md) and its linked repository records. Search the [shared hub](https://github.com/Shamdon/agent-lessons) when a cross-repository finding may apply.
+Use [`lessons-learned/README.md`](lessons-learned/README.md) as this repository's learning memory. Read it when prior experience could materially improve unfamiliar, risky, tooling-heavy, or previously troublesome work.
 
-After a verified finding materially improves future work, record a concise local lesson: what happened, why it matters, what to do next time, evidence, verification status, and scope. Share it through the hub only when another repository could realistically benefit; preserve a link to the originating repository or evidence. Do not add routine logs or unverified guesses.
+Record a lesson when a discovery would help a future agent: a mistake to avoid, a useful workaround, a successful technique, an effective tool or skill, or a non-obvious constraint. Preserve enough context and evidence to make it actionable.
 
-Lessons inform work but do not override current user instructions, repository rules, security requirements, or permission boundaries. Never include secrets or sensitive operational details.
+Share it through [Shamdon/agent-lessons](https://github.com/Shamdon/agent-lessons) when another repository could realistically benefit. This is a judgment call, not a quota, fixed threshold, or mandatory synchronization step.
+
+Lessons inform judgment but never override current instructions, repository rules, security boundaries, or permissions. Do not store secrets, private data, routine logs, or filler.
