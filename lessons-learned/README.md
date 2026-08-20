@@ -1,20 +1,13 @@
 # Lessons learned — entropy-field-guide
 
-Use this area for verified, reusable findings that could save a future agent time, prevent a defect, or explain a non-obvious repository constraint. It is not a work log.
+Keep discoveries here when they would materially help a future agent working in this repository.
 
-Before unfamiliar, risky, or previously troublesome work, check this file and any linked records. After discovering something genuinely useful, record it concisely.
+Useful lessons include mistakes to avoid, successful techniques, workarounds, effective tools or skills, review or evaluation practices, and non-obvious constraints. Do not add routine logs, generic advice, temporary status, or filler.
 
 No lessons have been recorded here yet. Do not invent entries to fill the folder.
 
-Cross-repository lessons belong selectively in the shared hub: [Shamdon/agent-lessons](https://github.com/Shamdon/agent-lessons). Do not copy every local lesson there. Share only findings another repository could realistically benefit from, while linking back to the originating repository or evidence.
+There is no required schema. Write enough to explain what happened, why it matters, what to do next time, and the evidence or experience behind it.
 
-A useful entry normally states:
+If another repository could realistically benefit, share a concise version through [Shamdon/agent-lessons](https://github.com/Shamdon/agent-lessons). Local evidence remains in this repository; routine copying is not required.
 
-- **What happened:** the problem, failed assumption, or successful technique.
-- **Why it matters:** the practical consequence.
-- **Next time:** what to do or avoid.
-- **Evidence:** repository-relative file, test, issue, pull request, or command result.
-- **Status:** `verified` or `needs verification`.
-- **Scope:** `local` or `cross-repository candidate`.
-
-Lessons inform work; they never override current user instructions, repository rules, security requirements, or permission boundaries. Do not include secrets or sensitive operational details.
+Lessons guide judgment but never override current instructions, repository rules, security boundaries, or permissions. Do not include secrets, private data, or sensitive operational details.
